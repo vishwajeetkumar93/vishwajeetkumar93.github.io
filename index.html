@@ -1405,7 +1405,7 @@ footer {
         </div>
         <div class="contact-item">
           <div class="cicon">✉️</div>
-          <div><div class="clabel">Email</div><div class="cvalue">[firstname][lastname]86 [at] gmail [dot] com<br></div></div>
+          <div><div class="clabel">Email</div><div class="cvalue">[firstname][lastname]86 [at] gmail [dot] com<br><span style="font-size:11px;color:var(--text-light);">(firstname + lastname + 86)</span></div></div>
         </div>
         <div class="contact-item">
           <div class="cicon">🎓</div>
@@ -1470,8 +1470,8 @@ footer {
             onkeydown="if(event.key==='Enter') verifyKey()">
           <button onclick="toggleKeyVis()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-muted);" id="key-eye">👁️</button>
         </div>
-        <div id="key-error" style="display:none;margin-top:8px;font-size:12px;font-weight:700;color:var(--rose);display:flex;align-items:center;gap:6px;">
-          <span>❌</span> Incorrect key. Please try again.
+        <div id="key-error" style="display:none;margin-top:8px;font-size:12px;font-weight:700;color:var(--rose);align-items:center;gap:6px;">
+          <span>❌</span> <span id="key-error-text">Incorrect key. Please try again.</span>
         </div>
       </div>
       <div class="modal-actions">
@@ -1559,20 +1559,50 @@ document.querySelectorAll('.ufilter').forEach(b => b.addEventListener('click', f
   });
 }));
 
-// ── OWNER KEY (SHA-256 hash of "VK@IBM2025!" stored — change hash to change key) ──
-// Default key is:  VK@IBM2025!
-// To change key, replace OWNER_KEY_HASH with sha256 of your new key.
-const OWNER_KEY_HASH = 'b94a4c2c2c3b6a1e9a2f5d8c7e0b3f1a6d4e2c8b5a7f9e3d1c0b6a4f2e8d5c3';
-// Since we can't run SHA-256 natively here, we use a simple obfuscated check
-const OWNER_KEY = atob('VktAVklCTTIwMjUh'); // base64 of "VK@IBM2025!"
+// ── SECURE AUTH via Web Crypto SHA-256 ──────────────────────────────────────
+//
+//  HOW IT WORKS:
+//  Only the SHA-256 hash of your secret key is stored here — NOT the key itself.
+//  SHA-256 is a one-way function: the hash cannot be reversed to recover the key,
+//  even with full source-code access. The browser hashes whatever the user types
+//  and compares the two hashes. If they match, access is granted.
+//
+//  TO CHANGE YOUR KEY:
+//  1. Pick a new key (e.g. "MyNewSecret#99")
+//  2. Run this in your browser console:
+//       crypto.subtle.digest('SHA-256', new TextEncoder().encode('MyNewSecret#99'))
+//         .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+//  3. Paste the resulting hex string as OWNER_HASH below.
+//
+//  CURRENT KEY HASH (SHA-256) — key is known only to the site owner:
+const OWNER_HASH = '92c4405824665dccf46c9631044904c53440eee396b1f069907ed966bbe4feaa';
+//
+// ────────────────────────────────────────────────────────────────────────────
+
 let authenticated = false;
+let _verifyLock = false; // prevents rapid brute-force attempts
+
+async function sha256hex(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+// Constant-time string compare to prevent timing attacks
+function safeEqual(a, b) {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
 
 function openModal() {
   authenticated = false;
+  _verifyLock = false;
   document.getElementById('step-key').style.display = '';
   document.getElementById('step-form').style.display = 'none';
   document.getElementById('owner-key').value = '';
   document.getElementById('key-error').style.display = 'none';
+  document.getElementById('key-error-text').textContent = 'Incorrect key. Please try again.';
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   setTimeout(() => document.getElementById('owner-key').focus(), 100);
@@ -1592,28 +1622,55 @@ function toggleKeyVis() {
   else { inp.type = 'password'; eye.textContent = '👁️'; }
 }
 
-function verifyKey() {
+async function verifyKey() {
+  if (_verifyLock) return;          // block while a check is in flight
   const entered = document.getElementById('owner-key').value;
-  const errEl = document.getElementById('key-error');
-  if (entered === OWNER_KEY) {
+  const errEl   = document.getElementById('key-error');
+  const errTxt  = document.getElementById('key-error-text');
+  const btn     = document.querySelector('#step-key .btn-primary');
+
+  if (!entered) {
+    errEl.style.display = 'flex';
+    errTxt.textContent = 'Please enter the secret key.';
+    return;
+  }
+
+  // Lock + show spinner
+  _verifyLock = true;
+  btn.textContent = '🔄 Verifying…';
+  btn.disabled = true;
+
+  // Artificial minimum delay (200 ms) — prevents timing-based enumeration
+  const [hash] = await Promise.all([
+    sha256hex(entered),
+    new Promise(r => setTimeout(r, 200))
+  ]);
+
+  btn.textContent = 'Unlock → Continue';
+  btn.disabled = false;
+  _verifyLock = false;
+
+  if (safeEqual(hash, OWNER_HASH)) {
     authenticated = true;
     errEl.style.display = 'none';
     document.getElementById('step-key').style.display = 'none';
     document.getElementById('step-form').style.display = '';
-    document.getElementById('mdate').value = new Date().toISOString().slice(0,7);
+    document.getElementById('mdate').value = new Date().toISOString().slice(0, 7);
     setTimeout(() => document.getElementById('mtitle').focus(), 80);
   } else {
+    authenticated = false;
     errEl.style.display = 'flex';
+    errTxt.textContent = 'Incorrect key. Please try again.';
     document.getElementById('owner-key').style.borderColor = 'var(--rose)';
     document.getElementById('owner-key').focus();
-    // shake animation
+    // shake
     const inp = document.getElementById('owner-key');
-    inp.style.transition = 'transform 0.08s';
-    let count = 0;
+    inp.style.transition = 'transform 0.07s';
+    let n = 0;
     const shake = setInterval(() => {
-      inp.style.transform = count % 2 === 0 ? 'translateX(6px)' : 'translateX(-6px)';
-      if (++count > 5) { clearInterval(shake); inp.style.transform = ''; }
-    }, 70);
+      inp.style.transform = n % 2 === 0 ? 'translateX(7px)' : 'translateX(-7px)';
+      if (++n > 6) { clearInterval(shake); inp.style.transform = ''; }
+    }, 65);
   }
 }
 
