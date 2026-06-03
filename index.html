@@ -1,1 +1,1619 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vishwajeet Kumar — Staff Research Scientist, IBM Research AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ibm-blue: #0f62fe;
+    --ibm-dark: #161616;
+    --ibm-mid: #262626;
+    --ibm-gray: #393939;
+    --ibm-subtle: #6f6f6f;
+    --ibm-border: #e0e0e0;
+    --ibm-light: #f4f4f4;
+    --ibm-white: #ffffff;
+    --accent: #0043ce;
+    --accent-light: #d0e2ff;
+    --gold: #c8a84b;
+    --gold-light: #f5e6c8;
+    --text-primary: #161616;
+    --text-secondary: #525252;
+    --radius: 2px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--ibm-white);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--ibm-border);
+    padding: 0 48px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--ibm-dark);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--ibm-blue); }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 100%;
+    height: 1px;
+    background: var(--ibm-blue);
+    transition: right 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--ibm-blue); }
+  .nav-links a:hover::after { right: 0; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    background: var(--ibm-dark);
+    color: white;
+    padding: 80px 64px 80px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(15,98,254,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-left::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(200,168,75,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--gold);
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 5vw, 72px);
+    font-weight: 900;
+    line-height: 1.0;
+    color: white;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-title {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 40px;
+    line-height: 1.4;
+  }
+  .hero-title strong {
+    color: rgba(255,255,255,0.95);
+    font-weight: 600;
+  }
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 48px;
+    max-width: 400px;
+  }
+  .stat {
+    background: rgba(255,255,255,0.03);
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.4);
+  }
+  .hero-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary {
+    background: var(--ibm-blue);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.05);
+    color: white;
+    border-color: rgba(255,255,255,0.4);
+  }
+
+  .hero-right {
+    background: var(--ibm-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 80px 80px 64px;
+    position: relative;
+  }
+  .hero-right::before {
+    content: '"';
+    position: absolute;
+    top: 60px; left: 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    color: rgba(0,0,0,0.04);
+    line-height: 1;
+  }
+  .hero-bio {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .hero-bio strong { color: var(--text-primary); font-weight: 600; }
+  .focus-areas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .focus-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    background: white;
+    border-left: 3px solid var(--ibm-blue);
+  }
+  .focus-area-icon {
+    width: 36px; height: 36px;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .focus-area-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .focus-area-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+  .affil-badges {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .affil-badge {
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid var(--ibm-border);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .affil-badge svg { flex-shrink: 0; }
+
+  /* SECTION */
+  section { padding: 100px 80px; }
+  section:nth-child(even) { background: var(--ibm-light); }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ibm-blue);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--ibm-blue);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 3vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    color: var(--ibm-dark);
+  }
+  .section-sub {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-bottom: 56px;
+  }
+
+  /* UPDATES */
+  .updates-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 48px;
+  }
+  .btn-post {
+    background: var(--ibm-blue);
+    color: white;
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-post:hover { background: var(--accent); transform: translateY(-1px); }
+
+  .updates-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--ibm-border);
+  }
+  .update-item {
+    background: white;
+    padding: 32px 40px;
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 32px;
+    align-items: start;
+    transition: background 0.2s;
+    position: relative;
+    animation: slideIn 0.4s ease both;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .update-item:hover { background: #fafafa; }
+  .update-item.pinned { border-left: 3px solid var(--gold); }
+  .update-item.new-item { border-left: 3px solid var(--ibm-blue); }
+  .update-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ibm-subtle);
+    letter-spacing: 0.08em;
+    padding-top: 4px;
+    text-align: right;
+  }
+  .update-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .tag-paper { background: var(--accent-light); color: var(--accent); }
+  .tag-patent { background: #e8daff; color: #6929c4; }
+  .tag-award { background: var(--gold-light); color: #8a6500; }
+  .tag-talk { background: #d9f7be; color: #237804; }
+  .tag-model { background: #ffd6e7; color: #9e1068; }
+  .tag-media { background: #e6f4ff; color: #0050b3; }
+  .update-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ibm-dark);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .update-body {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+  .update-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--ibm-subtle);
+  }
+  .update-venue {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .update-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ibm-blue);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: gap 0.2s;
+  }
+  .update-link:hover { gap: 8px; }
+  .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--ibm-subtle);
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    font-size: 14px;
+    align-self: start;
+    margin-top: 4px;
+  }
+  .update-item:hover .delete-btn { opacity: 1; }
+  .delete-btn:hover { color: #da1e28; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: white;
+    width: 620px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 48px;
+    position: relative;
+    animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: none; border: none;
+    font-size: 20px; cursor: pointer;
+    color: var(--ibm-subtle);
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close:hover { color: var(--ibm-dark); }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--ibm-dark);
+  }
+  .modal-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 36px;
+  }
+  .form-group {
+    margin-bottom: 24px;
+  }
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--ibm-border);
+    background: var(--ibm-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--ibm-blue);
+    background: white;
+  }
+  .form-textarea { min-height: 100px; resize: vertical; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .modal-actions { display: flex; gap: 12px; margin-top: 36px; }
+
+  /* PUBLICATIONS */
+  .pub-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 8px 18px;
+    border: 1px solid var(--ibm-border);
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-secondary);
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--ibm-dark);
+    color: white;
+    border-color: var(--ibm-dark);
+  }
+  .pub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--ibm-border);
+  }
+  .pub-item {
+    background: white;
+    padding: 24px 32px;
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 24px;
+    align-items: start;
+    transition: background 0.2s;
+  }
+  .pub-item:hover { background: #fafafa; }
+  .pub-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ibm-subtle);
+    padding-top: 4px;
+    text-align: right;
+  }
+  .pub-conf {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--ibm-dark);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+  .pub-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ibm-dark);
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .pub-authors {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .pub-authors strong { color: var(--ibm-blue); font-weight: 600; }
+  .pub-link {
+    font-size: 12px;
+    color: var(--ibm-blue);
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    padding-top: 4px;
+  }
+  .pub-link:hover { text-decoration: underline; }
+
+  /* PATENTS */
+  .patents-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--ibm-border);
+  }
+  .patent-card {
+    background: white;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .patent-card:hover { background: #fafafa; }
+  .patent-card::before {
+    content: '⚙';
+    position: absolute;
+    top: 16px; right: 20px;
+    font-size: 40px;
+    color: rgba(0,0,0,0.04);
+  }
+  .patent-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ibm-subtle);
+    margin-bottom: 12px;
+    letter-spacing: 0.06em;
+  }
+  .patent-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ibm-dark);
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .patent-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* TALKS */
+  .talks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--ibm-border);
+  }
+  .talk-item {
+    background: white;
+    padding: 28px 36px;
+    display: flex;
+    align-items: start;
+    gap: 28px;
+    transition: background 0.2s;
+  }
+  .talk-item:hover { background: #fafafa; }
+  .talk-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--ibm-subtle);
+    flex-shrink: 0;
+    width: 48px;
+    padding-top: 4px;
+    text-align: right;
+  }
+  .talk-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ibm-blue);
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .talk-content { flex: 1; }
+  .talk-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ibm-dark);
+    margin-bottom: 4px;
+  }
+  .talk-venue {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--ibm-border);
+  }
+  .contact-card {
+    background: white;
+    padding: 40px;
+  }
+  .contact-info-item {
+    display: flex;
+    align-items: start;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--ibm-border);
+  }
+  .contact-info-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .contact-icon {
+    width: 40px; height: 40px;
+    background: var(--ibm-dark);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .contact-info-label {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ibm-subtle);
+    margin-bottom: 4px;
+  }
+  .contact-info-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  .social-links {
+    display: flex;
+    gap: 8px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--ibm-border);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+    background: white;
+  }
+  .social-link:hover {
+    background: var(--ibm-dark);
+    color: white;
+    border-color: var(--ibm-dark);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ibm-dark);
+    color: rgba(255,255,255,0.4);
+    padding: 48px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+  footer a:hover { color: white; }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* COUNT BADGE */
+  .count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ibm-blue);
+    color: white;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    margin-left: 8px;
+  }
+
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 60px 40px; }
+    .hero-right { padding: 60px 40px; }
+    .patents-grid { grid-template-columns: 1fr 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    section { padding: 72px 40px; }
+    nav { padding: 0 24px; }
+    footer { padding: 40px; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .patents-grid { grid-template-columns: 1fr; }
+    section { padding: 60px 24px; }
+    .update-item { grid-template-columns: 1fr; gap: 12px; }
+    .update-date { text-align: left; }
+    .pub-item { grid-template-columns: 1fr; }
+    .pub-year { text-align: left; }
+    footer { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">VK<span>.</span>research</a>
+  <ul class="nav-links">
+    <li><a href="#updates">Updates</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#patents">Patents</a></li>
+    <li><a href="#talks">Talks</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-left">
+    <div class="hero-eyebrow">IBM Research AI · Bengaluru, India</div>
+    <h1 class="hero-name">Vishwajeet<br><em>Kumar</em></h1>
+    <p class="hero-title"><strong>Staff Research Scientist</strong> — Speech &amp; Language Group<br>IBM Research Lab, India</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-number">30+</span>
+        <span class="stat-label">Papers</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">10+</span>
+        <span class="stat-label">Patents</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">4.6K+</span>
+        <span class="stat-label">Citations</span>
+      </div>
+    </div>
+    <div class="hero-links">
+      <a href="https://scholar.google.com/citations?user=zPp0y6IAAAAJ" class="btn btn-primary" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+        Google Scholar
+      </a>
+      <a href="https://research.ibm.com/people/vishwajeet-kumar" class="btn btn-ghost" target="_blank">IBM Profile →</a>
+      <a href="https://www.linkedin.com/in/vishwajeetkumar86/" class="btn btn-ghost" target="_blank">LinkedIn →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <p class="hero-bio">
+      Researcher in the <strong>Speech and Language Group</strong> at IBM Research Lab, India. I received my joint Ph.D. in Computer Science and Engineering from <strong>IIT Bombay</strong> and <strong>Monash University</strong>, Melbourne.
+      <br><br>
+      My current focus is on <strong>Large Language Models for Retrieval Augmented Generation (RAG)</strong> and text embedding models for effective information retrieval — including co-authoring IBM's <strong>Granite Embedding model family</strong>.
+    </p>
+    <div class="focus-areas">
+      <div class="focus-area">
+        <div class="focus-area-icon">🔍</div>
+        <div>
+          <div class="focus-area-text">Retrieval Augmented Generation (RAG)</div>
+          <div class="focus-area-sub">LLMs · Dense &amp; Sparse Retrieval · Embedding Models</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <div class="focus-area-icon">❓</div>
+        <div>
+          <div class="focus-area-text">Question Answering &amp; Generation</div>
+          <div class="focus-area-sub">Table QA · Multi-hop QA · Cross-lingual QA</div>
+        </div>
+      </div>
+      <div class="focus-area">
+        <div class="focus-area-icon">🌐</div>
+        <div>
+          <div class="focus-area-text">Multilingual &amp; Code-mixed NLP</div>
+          <div class="focus-area-sub">Hindi-English · Indic Languages · Meta-Learning</div>
+        </div>
+      </div>
+    </div>
+    <div class="affil-badges">
+      <span class="affil-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        IIT Bombay · PhD
+      </span>
+      <span class="affil-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        Monash University · PhD
+      </span>
+      <span class="affil-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        IBM Research India
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- UPDATES FEED -->
+<section id="updates">
+  <div class="updates-header reveal">
+    <div>
+      <div class="section-label">Live Feed</div>
+      <h2 class="section-title">Research Updates <span class="count-badge" id="update-count">7</span></h2>
+      <p class="section-sub">Papers, patents, talks, and milestones — as they happen.</p>
+    </div>
+    <button class="btn-post" onclick="openModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Post Update
+    </button>
+  </div>
+  <div class="updates-feed reveal" id="updates-feed">
+    <!-- Pinned / latest -->
+    <div class="update-item pinned" data-type="model">
+      <div class="update-date">AUG 2025</div>
+      <div>
+        <span class="update-tag tag-model">🤖 New Model</span>
+        <div class="update-title">Granite Embedding R2 Models Released</div>
+        <div class="update-body">Co-authored the next-generation IBM Granite Embedding R2 models — featuring an increased context length, improved inference optimizations, and an updated encoder architecture based on ModernBERT, trained on 2T tokens. Released under Apache 2.0 for both commercial and research use.</div>
+        <div class="update-meta">
+          <span class="update-venue">arXiv:2508.21085</span>
+          <a class="update-link" href="https://arxiv.org/abs/2508.21085" target="_blank">Read Paper →</a>
+        </div>
+      </div>
+      <button class="delete-btn" onclick="deleteUpdate(this)" title="Delete">✕</button>
+    </div>
+    <div class="update-item" data-type="paper">
+      <div class="update-date">FEB 2025</div>
+      <div>
+        <span class="update-tag tag-model">🤖 Technical Report</span>
+        <div class="update-title">Granite Embedding Models — IBM's First Open Embedding Family</div>
+        <div class="update-body">Released the Granite Embedding model family — encoder-based models for dense and sparse retrieval with English and multilingual capabilities. Techniques include retrieval-oriented pretraining, contrastive finetuning, knowledge distillation, and model merging. Outperforms similar-sized public models on IBM retrieval benchmarks.</div>
+        <div class="update-meta">
+          <span class="update-venue">arXiv:2502.20204</span>
+          <a class="update-link" href="https://arxiv.org/abs/2502.20204" target="_blank">Read Paper →</a>
+        </div>
+      </div>
+      <button class="delete-btn" onclick="deleteUpdate(this)" title="Delete">✕</button>
+    </div>
+    <div class="update-item" data-type="paper">
+      <div class="update-date">2025</div>
+      <div>
+        <span class="update-tag tag-paper">📄 Paper</span>
+        <div class="update-title">MILU: A Multi-task Indic Language Understanding Benchmark</div>
+        <div class="update-body">Accepted at NAACL 2025. A comprehensive multi-task benchmark for evaluating language understanding across Indic languages, pushing the boundaries of multilingual NLP evaluation.</div>
+        <div class="update-meta">
+          <span class="update-venue">NAACL 2025</span>
+        </div>
+      </div>
+      <button class="delete-btn" onclick="deleteUpdate(this)" title="Delete">✕</button>
+    </div>
+    <div class="update-item" data-type="paper">
+      <div class="update-date">2025</div>
+      <div>
+        <span class="update-tag tag-paper">📄 Paper</span>
+        <div class="update-title">Benchmarking and Building Zero-Shot Hindi Retrieval Model with Hindi-BEIR and NLLB-E5</div>
+        <div class="update-body">Short paper accepted at NAACL 2025. Introduces Hindi-BEIR — a benchmark for Hindi information retrieval — alongside a zero-shot retrieval model built on NLLB-E5 for low-resource Hindi search.</div>
+        <div class="update-meta">
+          <span class="update-venue">NAACL 2025</span>
+        </div>
+      </div>
+      <button class="delete-btn" onclick="deleteUpdate(this)" title="Delete">✕</button>
+    </div>
+    <div class="update-item" data-type="patent">
+      <div class="update-date">SEP 2025</div>
+      <div>
+        <span class="update-tag tag-patent">🔒 Patent Granted</span>
+        <div class="update-title">US Patent 12411875 Granted</div>
+        <div class="update-body">New US patent granted on question answering systems for structured and unstructured data — part of a growing portfolio of 10+ patents and disclosures in NLP and AI systems.</div>
+        <div class="update-meta">
+          <span class="update-venue">US 12411875 · Sep 8, 2025</span>
+          <a class="update-link" href="https://patents.google.com/patent/US12411875" target="_blank">View Patent →</a>
+        </div>
+      </div>
+      <button class="delete-btn" onclick="deleteUpdate(this)" title="Delete">✕</button>
+    </div>
+    <div class="update-item" data-type="paper">
+      <div class="update-date">2023</div>
+      <div>
+        <span class="update-tag tag-paper">📄 Demo Paper</span>
+        <div class="update-title">PrimeQA: The Prime Repository for State-of-the-Art Multilingual Question Answering</div>
+        <div class="update-body">Accepted at ACL 2023. PrimeQA is IBM's open-source unified framework for multilingual QA research and development, enabling researchers to build, train, and evaluate QA systems across languages at scale.</div>
+        <div class="update-meta">
+          <span class="update-venue">ACL 2023</span>
+          <a class="update-link" href="https://research.ibm.com/publications/primeqa-the-prime-repository-for-state-of-the-art-multilingual-question-answering-research-and-development--1" target="_blank">Read Paper →</a>
+        </div>
+      </div>
+      <button class="delete-btn" onclick="deleteUpdate(this)" title="Delete">✕</button>
+    </div>
+    <div class="update-item" data-type="paper">
+      <div class="update-date">2022</div>
+      <div>
+        <span class="update-tag tag-paper">📄 Paper</span>
+        <div class="update-title">On Utilizing Matrix and Embedding Language Resources to Improve Downstream Tasks in Hinglish</div>
+        <div class="update-body">Accepted at EMNLP 2022. Shows that a meta-learning framework leveraging constituent Hindi and English language tasks significantly improves performance on code-switched Hindi-English (Hinglish) NLP tasks using the GLUECoS benchmark.</div>
+        <div class="update-meta">
+          <span class="update-venue">EMNLP 2022</span>
+        </div>
+      </div>
+      <button class="delete-btn" onclick="deleteUpdate(this)" title="Delete">✕</button>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="reveal">
+    <div class="section-label">Research Output</div>
+    <h2 class="section-title">Selected Publications</h2>
+    <p class="section-sub">30+ peer-reviewed papers across top ML/AI/NLP venues including ACL, EMNLP, NAACL, SIGIR, PAKDD.</p>
+  </div>
+  <div class="pub-filters reveal">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="2025">2025</button>
+    <button class="filter-btn" data-filter="2023">2023</button>
+    <button class="filter-btn" data-filter="2022">2022</button>
+    <button class="filter-btn" data-filter="2021">2021</button>
+    <button class="filter-btn" data-filter="2019">2019</button>
+    <button class="filter-btn" data-filter="older">Pre-2019</button>
+  </div>
+  <div class="pub-list reveal" id="pub-list">
+
+    <div class="pub-item" data-year="2025">
+      <div class="pub-year">2025</div>
+      <div>
+        <span class="pub-conf">NAACL 2025</span>
+        <div class="pub-title">MILU: A Multi-task Indic Language Understanding Benchmark</div>
+        <div class="pub-authors">Sshubam Verma, Mohammed Safi Ur Rahman, et al. (incl. <strong>Vishwajeet Kumar</strong>)</div>
+      </div>
+      <a class="pub-link" href="https://research.ibm.com/publications/milu-a-multi-task-indic-language-understanding-benchmark" target="_blank">Paper →</a>
+    </div>
+
+    <div class="pub-item" data-year="2025">
+      <div class="pub-year">2025</div>
+      <div>
+        <span class="pub-conf">NAACL 2025</span>
+        <div class="pub-title">Benchmarking and Building Zero-Shot Hindi Retrieval Model with Hindi-BEIR and NLLB-E5</div>
+        <div class="pub-authors">Arkadeep Acharya, Rudra Murthy Venkataramana, et al. (incl. <strong>Vishwajeet Kumar</strong>)</div>
+      </div>
+      <a class="pub-link" href="https://research.ibm.com/publications/benchmarking-and-building-zero-shot-hindi-retrieval-model-with-hindi-beir-and-nllb-e5" target="_blank">Paper →</a>
+    </div>
+
+    <div class="pub-item" data-year="2025">
+      <div class="pub-year">2025</div>
+      <div>
+        <span class="pub-conf">arXiv 2025</span>
+        <div class="pub-title">Granite Embedding Models</div>
+        <div class="pub-authors">Parul Awasthy, Aashka Trivedi, ..., <strong>Vishwajeet Kumar</strong>, ..., Radu Florian</div>
+      </div>
+      <a class="pub-link" href="https://arxiv.org/abs/2502.20204" target="_blank">PDF →</a>
+    </div>
+
+    <div class="pub-item" data-year="2023">
+      <div class="pub-year">2023</div>
+      <div>
+        <span class="pub-conf">ACL 2023</span>
+        <div class="pub-title">PrimeQA: The Prime Repository for State-of-the-Art Multilingual Question Answering Research and Development</div>
+        <div class="pub-authors">Avi Sil, Jaydeep Sen, et al. (incl. <strong>Vishwajeet Kumar</strong>)</div>
+      </div>
+      <a class="pub-link" href="https://research.ibm.com/publications/primeqa-the-prime-repository-for-state-of-the-art-multilingual-question-answering-research-and-development--1" target="_blank">Paper →</a>
+    </div>
+
+    <div class="pub-item" data-year="2022">
+      <div class="pub-year">2022</div>
+      <div>
+        <span class="pub-conf">EMNLP 2022</span>
+        <div class="pub-title">On Utilizing Matrix and Embedding Language Resources to Improve Downstream Tasks in Hinglish</div>
+        <div class="pub-authors"><strong>Vishwajeet Kumar</strong>, Rudra Murthy Venkataramana, Tejas Indulal Dhamecha</div>
+      </div>
+      <a class="pub-link" href="https://research.ibm.com/publications/on-utilizing-matrix-and-embedding-language-resources-to-improve-downstream-tasks-in-hinglish" target="_blank">Paper →</a>
+    </div>
+
+    <div class="pub-item" data-year="2021">
+      <div class="pub-year">2021</div>
+      <div>
+        <span class="pub-conf">EMNLP 2021</span>
+        <div class="pub-title">Topic Transferable Table Question Answering</div>
+        <div class="pub-authors">Saneem Ahmed Chemmengath, <strong>Vishwajeet Kumar</strong>, Samarth Bharadwaj, Jaydeep Sen, Mustafa Canim, et al.</div>
+      </div>
+      <a class="pub-link" href="https://arxiv.org/abs/2109.07377" target="_blank">arXiv →</a>
+    </div>
+
+    <div class="pub-item" data-year="2021">
+      <div class="pub-year">2021</div>
+      <div>
+        <span class="pub-conf">SIGIR 2021</span>
+        <div class="pub-title">Select, Substitute, Search: A New Benchmark for Knowledge-Augmented Visual Question Answering</div>
+        <div class="pub-authors">Aman Jain, Mayank Kothyari, <strong>Vishwajeet Kumar</strong>, Preethi Jyothi, Ganesh Ramakrishnan, Soumen Chakrabarti</div>
+      </div>
+      <a class="pub-link" href="https://arxiv.org/pdf/2103.05568.pdf" target="_blank">PDF →</a>
+    </div>
+
+    <div class="pub-item" data-year="2021">
+      <div class="pub-year">2021</div>
+      <div>
+        <span class="pub-conf">NAACL 2021</span>
+        <div class="pub-title">Capturing Row and Column Semantics in Transformer Based Question Answering over Tables</div>
+        <div class="pub-authors">Michael Glass, Mustafa Canim, Alfio Gliozzo, Saneem Chemmengath, <strong>Vishwajeet Kumar</strong>, et al.</div>
+      </div>
+      <a class="pub-link" href="https://www.aclweb.org/anthology/2021.naacl-main.96.pdf" target="_blank">PDF →</a>
+    </div>
+
+    <div class="pub-item" data-year="2021">
+      <div class="pub-year">2021</div>
+      <div>
+        <span class="pub-conf">EACL 2021</span>
+        <div class="pub-title">Meta-Learning for Effective Multi-task and Multilingual Modelling</div>
+        <div class="pub-authors">Ishan Tarunesh, Sushil Khyalia, <strong>Vishwajeet Kumar</strong>, Ganesh Ramakrishnan, Preethi Jyothi</div>
+      </div>
+      <a class="pub-link" href="https://arxiv.org/pdf/2101.10368.pdf" target="_blank">PDF →</a>
+    </div>
+
+    <div class="pub-item" data-year="2019">
+      <div class="pub-year">2019</div>
+      <div>
+        <span class="pub-conf">ACL 2019</span>
+        <div class="pub-title">Cross-Lingual Training for Automatic Question Generation</div>
+        <div class="pub-authors"><strong>Vishwajeet Kumar</strong>, Nitish Joshi, Arijit Mukherjee, Ganesh Ramakrishnan, Preethi Jyothi</div>
+      </div>
+      <a class="pub-link" href="https://arxiv.org/pdf/1906.02525.pdf" target="_blank">PDF →</a>
+    </div>
+
+    <div class="pub-item" data-year="2019">
+      <div class="pub-year">2019</div>
+      <div>
+        <span class="pub-conf">IJCAI 2019</span>
+        <div class="pub-title">Neural Program Induction for KBQA Without Gold Programs or Query Annotations</div>
+        <div class="pub-authors">Amrita Saha, Ghulam Ahmed Ansari, <strong>Vishwajeet Kumar</strong>, Karthik Shankaranarayanan, Soumen Chakrabarti, Mohan Bhambhani</div>
+      </div>
+      <a class="pub-link" href="https://www.ijcai.org/proceedings/2019/0679.pdf" target="_blank">PDF →</a>
+    </div>
+
+    <div class="pub-item" data-year="2019">
+      <div class="pub-year">2019</div>
+      <div>
+        <span class="pub-conf">EMNLP 2019</span>
+        <div class="pub-title">ParaQG: A System for Generating Questions and Answers from Paragraphs</div>
+        <div class="pub-authors"><strong>Vishwajeet Kumar</strong> et al.</div>
+      </div>
+      <a class="pub-link" href="https://www.aclweb.org/anthology/D19-3030.pdf" target="_blank">PDF →</a>
+    </div>
+
+    <div class="pub-item" data-year="2019">
+      <div class="pub-year">2019</div>
+      <div>
+        <span class="pub-conf">ISWC 2019</span>
+        <div class="pub-title">Difficulty-controllable Multi-hop Question Generation From Knowledge Graphs</div>
+        <div class="pub-authors"><strong>Vishwajeet Kumar</strong> et al.</div>
+      </div>
+      <span></span>
+    </div>
+
+    <div class="pub-item" data-year="older">
+      <div class="pub-year">2018</div>
+      <div>
+        <span class="pub-conf">NAACL 2018</span>
+        <div class="pub-title">Entity Resolution and Location Disambiguation in Ancient Hindu Temples Domain using Web Data</div>
+        <div class="pub-authors">Ayush Maheshwari, <strong>Vishwajeet Kumar</strong>, Ganesh Ramakrishnan, Sakethanath Jagarlapudi</div>
+      </div>
+      <a class="pub-link" href="https://vishwajeetkumar93.github.io/papers/naacl-2018.pdf" target="_blank">PDF →</a>
+    </div>
+
+    <div class="pub-item" data-year="older">
+      <div class="pub-year">2018</div>
+      <div>
+        <span class="pub-conf">PAKDD 2018</span>
+        <div class="pub-title">Automating Reading Comprehension by Generating Question and Answer Pairs</div>
+        <div class="pub-authors"><strong>Vishwajeet Kumar</strong>, Kreeti Boorla, Ganesh Ramakrishnan, Yuan Fang Li</div>
+      </div>
+      <a class="pub-link" href="https://arxiv.org/pdf/1803.03664.pdf" target="_blank">PDF →</a>
+    </div>
+
+    <div class="pub-item" data-year="older">
+      <div class="pub-year">2016</div>
+      <div>
+        <span class="pub-conf">EMNLP 2016</span>
+        <div class="pub-title">Towards Semi-Automatic Generation of Proposition Banks for Low-Resource Languages</div>
+        <div class="pub-authors">Alan Aikbik, <strong>Vishwajeet Kumar</strong>, Yunyao Li</div>
+      </div>
+      <span></span>
+    </div>
+
+    <div class="pub-item" data-year="older">
+      <div class="pub-year">2016</div>
+      <div>
+        <span class="pub-conf">VLDB 2016</span>
+        <div class="pub-title">Civique: Using Social Media to Detect Urban Emergencies</div>
+        <div class="pub-authors">Diptesh Kanojia, <strong>Vishwajeet Kumar</strong>, Krithi Ramamritham</div>
+      </div>
+      <span></span>
+    </div>
+
+  </div>
+</section>
+
+<!-- PATENTS -->
+<section id="patents">
+  <div class="reveal">
+    <div class="section-label">IP Portfolio</div>
+    <h2 class="section-title">Patents &amp; Disclosures</h2>
+    <p class="section-sub">10+ patents and disclosures in NLP systems, question answering, and language intelligence.</p>
+  </div>
+  <div class="patents-grid reveal">
+    <div class="patent-card">
+      <div class="patent-id">US 12411875 · Sep 8, 2025</div>
+      <div class="patent-title">Question Generation &amp; Answering System (NLP)</div>
+      <div class="patent-date">🇺🇸 United States · Granted</div>
+    </div>
+    <div class="patent-card">
+      <div class="patent-id">US 12210538 · Jan 27, 2025</div>
+      <div class="patent-title">Multi-instance, Multi-answer Training For Table And Text Question Answering</div>
+      <div class="patent-date">🇺🇸 United States · <a href="https://patents.google.com/patent/US12210538/en" target="_blank" style="color:var(--ibm-blue)">View →</a></div>
+    </div>
+    <div class="patent-card">
+      <div class="patent-id">US 12182508 · Dec 30, 2024</div>
+      <div class="patent-title">Natural Language Question Answering Using Non-relational Tables</div>
+      <div class="patent-date">🇺🇸 United States · <a href="https://patents.google.com/patent/US12182508/en" target="_blank" style="color:var(--ibm-blue)">View →</a></div>
+    </div>
+    <div class="patent-card">
+      <div class="patent-id">US 12050877 · Jul 29, 2024</div>
+      <div class="patent-title">Contextual Dialogue Framework Over Dynamic Tables</div>
+      <div class="patent-date">🇺🇸 United States · <a href="https://patents.google.com/patent/US12050877/en" target="_blank" style="color:var(--ibm-blue)">View →</a></div>
+    </div>
+    <div class="patent-card">
+      <div class="patent-id">Disclosed · NLP Systems</div>
+      <div class="patent-title">Question Generation System for Tables and Passages (NLP)</div>
+      <div class="patent-date">🔒 IBM Disclosure</div>
+    </div>
+    <div class="patent-card" style="background: var(--ibm-dark); color: white;">
+      <div style="font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:12px;">10+ Total</div>
+      <div style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; margin-bottom:12px; color:white;">Full Portfolio</div>
+      <div style="font-size:13px; color:rgba(255,255,255,0.6); line-height:1.6;">10+ patents and disclosures covering NLP, table reasoning, knowledge graphs, and AI language systems.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TALKS -->
+<section id="talks">
+  <div class="reveal">
+    <div class="section-label">Presentations</div>
+    <h2 class="section-title">Talks &amp; Workshops</h2>
+    <p class="section-sub">Invited talks, tutorials, and workshop contributions at leading AI/NLP venues.</p>
+  </div>
+  <div class="talks-list reveal">
+    <div class="talk-item">
+      <div class="talk-year">2023</div>
+      <div class="talk-dot"></div>
+      <div class="talk-content">
+        <div class="talk-title">PrimeQA: Multilingual Question Answering at Scale</div>
+        <div class="talk-venue">ACL 2023 — Demo Session · Toronto, Canada</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-year">2022</div>
+      <div class="talk-dot"></div>
+      <div class="talk-content">
+        <div class="talk-title">Code-switched NLP and Meta-Learning for Hinglish</div>
+        <div class="talk-venue">EMNLP 2022 — Abu Dhabi, UAE</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-year">2021</div>
+      <div class="talk-dot"></div>
+      <div class="talk-content">
+        <div class="talk-title">Table Question Answering with Topic Transfer</div>
+        <div class="talk-venue">EMNLP 2021 — Punta Cana, Dominican Republic</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-year">2021</div>
+      <div class="talk-dot"></div>
+      <div class="talk-content">
+        <div class="talk-title">Transformer-based Reasoning over Structured Tables</div>
+        <div class="talk-venue">NAACL 2021 — Online</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-year">2019</div>
+      <div class="talk-dot"></div>
+      <div class="talk-content">
+        <div class="talk-title">Cross-Lingual Training for Automatic Question Generation</div>
+        <div class="talk-venue">ACL 2019 — Florence, Italy</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-year">2019</div>
+      <div class="talk-dot"></div>
+      <div class="talk-content">
+        <div class="talk-title">Multi-hop Question Generation from Knowledge Graphs</div>
+        <div class="talk-venue">ISWC 2019 — Auckland, New Zealand</div>
+      </div>
+    </div>
+    <div class="talk-item">
+      <div class="talk-year">2017</div>
+      <div class="talk-dot"></div>
+      <div class="talk-content">
+        <div class="talk-title">Dictionary Generalization Across Languages</div>
+        <div class="talk-venue">Amazon India AI Summit 2017 — Poster Presentation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title">Contact</h2>
+    <p class="section-sub">Open to research collaborations, academic discussions, and opportunities in NLP and AI.</p>
+  </div>
+  <div class="contact-grid reveal">
+    <div class="contact-card">
+      <div class="contact-info-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-info-label">Location</div>
+          <div class="contact-info-value">IBM Research India<br>Bengaluru, Karnataka, India</div>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-info-label">Email</div>
+          <div class="contact-info-value">vishwajeetkumar86 [at] gmail [dot] com</div>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">🎓</div>
+        <div>
+          <div class="contact-info-label">Education</div>
+          <div class="contact-info-value">Ph.D. Computer Science &amp; Engineering<br>IIT Bombay &amp; Monash University (2020)</div>
+        </div>
+      </div>
+      <div class="social-links">
+        <a class="social-link" href="https://scholar.google.com/citations?user=zPp0y6IAAAAJ" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"/></svg>
+          Scholar
+        </a>
+        <a class="social-link" href="https://github.com/vishwajeetkumar93" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a class="social-link" href="https://www.linkedin.com/in/vishwajeetkumar86/" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a class="social-link" href="https://research.ibm.com/people/vishwajeet-kumar" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          IBM Research
+        </a>
+      </div>
+    </div>
+    <div class="contact-card" style="background: var(--ibm-dark); color: white; display: flex; flex-direction: column; justify-content: center; gap: 24px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:16px;">Research Interests</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid rgba(255,255,255,0.08);">
+            <span style="font-size:18px;">🔍</span>
+            <span style="font-size:14px;color:rgba(255,255,255,0.8);">Retrieval Augmented Generation</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid rgba(255,255,255,0.08);">
+            <span style="font-size:18px;">❓</span>
+            <span style="font-size:14px;color:rgba(255,255,255,0.8);">Question Answering &amp; Generation</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid rgba(255,255,255,0.08);">
+            <span style="font-size:18px;">🌐</span>
+            <span style="font-size:14px;color:rgba(255,255,255,0.8);">Multilingual &amp; Indic NLP</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid rgba(255,255,255,0.08);">
+            <span style="font-size:18px;">🧠</span>
+            <span style="font-size:14px;color:rgba(255,255,255,0.8);">Large Language Models</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid rgba(255,255,255,0.08);">
+            <span style="font-size:18px;">🏗️</span>
+            <span style="font-size:14px;color:rgba(255,255,255,0.8);">Knowledge Graphs &amp; Structured Reasoning</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Vishwajeet Kumar · IBM Research AI</span>
+  <span>
+    <a href="https://scholar.google.com/citations?user=zPp0y6IAAAAJ" target="_blank">Scholar</a> ·
+    <a href="https://github.com/vishwajeetkumar93" target="_blank">GitHub</a> ·
+    <a href="https://research.ibm.com/people/vishwajeet-kumar" target="_blank">IBM</a> ·
+    <a href="https://www.linkedin.com/in/vishwajeetkumar86/" target="_blank">LinkedIn</a>
+  </span>
+</footer>
+
+<!-- POST UPDATE MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">Post an Update</div>
+    <p class="modal-sub">Share a new paper, patent, award, talk, or any research milestone.</p>
+    <div class="form-group">
+      <label class="form-label">Update Type</label>
+      <select class="form-select" id="update-type">
+        <option value="paper">📄 Paper Accepted / Published</option>
+        <option value="patent">🔒 Patent Granted / Filed</option>
+        <option value="model">🤖 Model / Tool Released</option>
+        <option value="award">🏆 Award / Recognition</option>
+        <option value="talk">🎤 Talk / Presentation</option>
+        <option value="media">📰 Media / Blog</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Title</label>
+      <input class="form-input" id="update-title-input" type="text" placeholder="e.g., 'New Paper Accepted at ACL 2026'">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-textarea" id="update-body-input" placeholder="Brief description of the update — what it's about, why it matters..."></textarea>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Venue / ID</label>
+        <input class="form-input" id="update-venue-input" type="text" placeholder="e.g., ACL 2026 / US 12345678">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" id="update-date-input" type="month">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Link (optional)</label>
+      <input class="form-input" id="update-link-input" type="url" placeholder="https://arxiv.org/abs/...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="submitUpdate()">Publish Update</button>
+      <button class="btn btn-ghost" style="border:1px solid var(--ibm-border);color:var(--text-secondary);" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // NAV SCROLL
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // REVEAL ON SCROLL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // PUB FILTER
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.dataset.filter;
+      document.querySelectorAll('.pub-item').forEach(item => {
+        item.style.display = (filter === 'all' || item.dataset.year === filter) ? '' : 'none';
+      });
+    });
+  });
+
+  // MODAL
+  function openModal() {
+    document.getElementById('modal-overlay').classList.add('active');
+    document.getElementById('update-date-input').value = new Date().toISOString().slice(0,7);
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function closeModalOnOverlay(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  }
+
+  const tagMap = {
+    paper: 'tag-paper',
+    patent: 'tag-patent',
+    model: 'tag-model',
+    award: 'tag-award',
+    talk: 'tag-talk',
+    media: 'tag-media',
+  };
+  const labelMap = {
+    paper: '📄 Paper',
+    patent: '🔒 Patent',
+    model: '🤖 Model',
+    award: '🏆 Award',
+    talk: '🎤 Talk',
+    media: '📰 Media',
+  };
+
+  function submitUpdate() {
+    const type = document.getElementById('update-type').value;
+    const title = document.getElementById('update-title-input').value.trim();
+    const body = document.getElementById('update-body-input').value.trim();
+    const venue = document.getElementById('update-venue-input').value.trim();
+    const date = document.getElementById('update-date-input').value;
+    const link = document.getElementById('update-link-input').value.trim();
+
+    if (!title) {
+      document.getElementById('update-title-input').style.borderColor = '#da1e28';
+      return;
+    }
+
+    const dateStr = date ? new Date(date + '-01').toLocaleString('en-US', {month:'short', year:'numeric'}).toUpperCase() : 'JUST NOW';
+
+    const item = document.createElement('div');
+    item.className = 'update-item new-item';
+    item.dataset.type = type;
+    item.innerHTML = `
+      <div class="update-date">${dateStr}</div>
+      <div>
+        <span class="update-tag ${tagMap[type]}">${labelMap[type]}</span>
+        <div class="update-title">${title}</div>
+        ${body ? `<div class="update-body">${body}</div>` : ''}
+        <div class="update-meta">
+          ${venue ? `<span class="update-venue">${venue}</span>` : ''}
+          ${link ? `<a class="update-link" href="${link}" target="_blank">Read More →</a>` : ''}
+        </div>
+      </div>
+      <button class="delete-btn" onclick="deleteUpdate(this)" title="Delete">✕</button>
+    `;
+
+    const feed = document.getElementById('updates-feed');
+    feed.insertBefore(item, feed.firstChild);
+    updateCount();
+    closeModal();
+    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Reset form
+    ['update-title-input','update-body-input','update-venue-input','update-link-input'].forEach(id => {
+      document.getElementById(id).value = '';
+      document.getElementById(id).style.borderColor = '';
+    });
+  }
+
+  function deleteUpdate(btn) {
+    const item = btn.closest('.update-item');
+    item.style.transition = 'opacity 0.3s, transform 0.3s';
+    item.style.opacity = '0';
+    item.style.transform = 'translateX(-20px)';
+    setTimeout(() => { item.remove(); updateCount(); }, 300);
+  }
+
+  function updateCount() {
+    const count = document.querySelectorAll('#updates-feed .update-item').length;
+    document.getElementById('update-count').textContent = count;
+  }
+
+  // Keyboard close modal
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
